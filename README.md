@@ -1,10 +1,15 @@
-# FizikUm - Physics Simulations for Electric Circuits
+<h1 align="center">FizikUm - Physics Simulations for Electric Circuits </h1>
 
-![](https://FizikUm.com/logo.png)
+<p align="center">
+  <img src="README-Images/FizikUmLog.png" alt="FizikUm Logo" width="200" height="200">
+</p>
+
 
 ## Overview
 
 FizikUm is a web-based platform that provides interactive physics simulations for electric circuits. Our mission is to make learning and experimenting with electric circuits engaging and educational. CircuitSim is designed for both students and educators, offering a collection of preset common circuits and the ability to create custom simulations.
+
+<img src="README-Images/FizikUm.png" alt="FizikUm" width="600" height="500">
 
 ## Features
 
