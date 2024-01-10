@@ -3880,19 +3880,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AORUS\\.nuget\\packages\\": {}
+    "C:\\Users\\Emil Neshkov\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\random things\\ФизикУм\\FizikUm\\FizikUm\\FizikUm\\FizikUm.csproj",
+      "projectUniqueName": "D:\\FizikUm\\FizikUm\\FizikUm\\FizikUm.csproj",
       "projectName": "FizikUm",
-      "projectPath": "D:\\random things\\ФизикУм\\FizikUm\\FizikUm\\FizikUm\\FizikUm.csproj",
-      "packagesPath": "C:\\Users\\AORUS\\.nuget\\packages\\",
-      "outputPath": "D:\\random things\\ФизикУм\\FizikUm\\FizikUm\\FizikUm\\obj\\",
+      "projectPath": "D:\\FizikUm\\FizikUm\\FizikUm\\FizikUm.csproj",
+      "packagesPath": "C:\\Users\\Emil Neshkov\\.nuget\\packages\\",
+      "outputPath": "D:\\FizikUm\\FizikUm\\FizikUm\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\AORUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Emil Neshkov\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3970,7 +3970,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
