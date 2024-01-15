@@ -3,7 +3,10 @@ using FizikUm.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,16 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
+builder.Services.Configure<BrotliCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
+builder.Services.AddResponseCompression(options =>
+{
+    options.MimeTypes = new[] {
+        "application/octet-stream",
+        "application/vnd.unity"
+    };
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.EnableForHttps = true;
+});
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -39,7 +52,17 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseResponseCompression();
+
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings.Remove(".unityweb");
+provider.Mappings.Add(".unityweb", "application/octet-stream");
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
+
 app.UseRouting();
 
 app.UseAuthentication();
