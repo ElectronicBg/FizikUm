@@ -34,7 +34,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "src/assets/FizikUmBuild/Build/FizikUmBuild.loader.js"
+              "src/assets/FizikUmBuildTest/Build/UnityLoader.js"
             ]
           },
           "configurations": {

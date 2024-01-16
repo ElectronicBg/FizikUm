@@ -18,7 +18,7 @@ export class UnityComponent implements OnInit {
 
     this.gameInstance = loader.instantiate(
       'gameContainer',
-      '/assets/FizikUmBuild/Build/FizikUmBuild.framework.js.br', {
+      '/assets/FizikUmBuildTest/Build/FizikUmBuildTest.json', {
       onProgress: (gameInstance: any, progress: number) => {
         this.progress = progress;
         if (progress === 1) {
