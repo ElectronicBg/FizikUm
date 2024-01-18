@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FizikUm.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240110182822_Initial")]
+    [Migration("20240118153842_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -238,6 +238,9 @@ namespace FizikUm.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassroomId"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubjectCategoryId")
                         .HasColumnType("int");

@@ -15,6 +15,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { UnityComponent } from './unity/unity.component';
 import { ResourceComponent } from './resource/resource.component';
 import { SubjectCategoryComponent } from './subject-category/subject-category.component';
+import { ClassroomComponent } from './classroom/classroom.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SubjectCategoryComponent } from './subject-category/subject-category.co
     FetchDataComponent,
     UnityComponent,
     ResourceComponent,
-    SubjectCategoryComponent
+    SubjectCategoryComponent,
+    ClassroomComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,8 +38,9 @@ import { SubjectCategoryComponent } from './subject-category/subject-category.co
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'resources', component: ResourceComponent },
+      { path: 'resource', component: ResourceComponent },
       { path: 'subject-category', component: SubjectCategoryComponent },
+      { path: 'classroom', component: ClassroomComponent },
     ])
   ],
   providers: [

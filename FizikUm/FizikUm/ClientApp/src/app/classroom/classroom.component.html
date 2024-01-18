@@ -1,0 +1,53 @@
+<nav>
+  <a (click)="showView('index')">Index</a>
+  <a (click)="showView('create')">Create</a>
+  <a (click)="showView('edit')">Edit</a>
+</nav>
+
+<div *ngIf="currentView === 'index'">
+  <h2>Classrooms</h2>
+
+  <ul>
+    <li *ngFor="let classroom of classrooms">
+      <strong>Name:</strong> {{ classroom.name }}<br>
+      <strong>Subject Category:</strong> {{ classroom.subjectCategory?.name }}<br>
+
+      <button (click)="showView('edit', classroom)">Edit</button>
+      <button (click)="deleteClassroom(classroom.classroomId)">Delete</button>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="currentView === 'create'">
+  <div>
+    <h3>Add New Classroom</h3>
+    <form (ngSubmit)="addClassroom()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="newClassroom.name" required>
+
+      <label for="subjectCategoryId">Subject Category:</label>
+      <select id="subjectCategoryId" name="subjectCategoryId" [(ngModel)]="newClassroom.subjectCategoryId" required>
+        <option *ngFor="let category of subjectCategories" [value]="category.subjectCategoryId">{{ category.name }}</option>
+      </select>
+
+      <button type="submit">Add Classroom</button>
+    </form>
+  </div>
+</div>
+
+
+<div *ngIf="currentView === 'edit'">
+  <p>Edit Classroom View</p>
+  <form *ngIf="selectedClassroom" (ngSubmit)="updateClassroom(selectedClassroom.classroomId, selectedClassroom)">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="selectedClassroom.name" required>
+
+    <label for="subjectCategoryId">Subject Category:</label>
+    <select id="subjectCategoryId" name="subjectCategoryId" [(ngModel)]="selectedClassroom.subjectCategoryId" required>
+      <option *ngFor="let category of subjectCategories" [value]="category.subjectCategoryId">{{ category.name }}</option>
+    </select>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+

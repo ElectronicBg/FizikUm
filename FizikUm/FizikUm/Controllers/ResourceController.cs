@@ -15,14 +15,14 @@ public class ResourceController : ControllerBase
     }
 
     // GET: api/Resource
-    [HttpGet]
+    [HttpGet("аpi/GetResource")]
     public async Task<ActionResult<IEnumerable<Resource>>> GetResources()
     {
         return await _context.Resources.ToListAsync();
     }
 
     // GET: api/Resource/5
-    [HttpGet("{id}")]
+    [HttpGet("аpi/GetResource/{id}")]
     public async Task<ActionResult<Resource>> GetResource(int id)
     {
         var resource = await _context.Resources.FindAsync(id);
@@ -36,7 +36,7 @@ public class ResourceController : ControllerBase
     }
 
     // POST: api/Resource
-    [HttpPost]
+    [HttpPost("аpi/PostResource")]
     public async Task<ActionResult<Resource>> PostResource(Resource resource)
     {
         _context.Resources.Add(resource);
@@ -46,7 +46,7 @@ public class ResourceController : ControllerBase
     }
 
     // PUT: api/Resource/5
-    [HttpPut("{id}")]
+    [HttpPut("аpi/PutResource/{id}")]
     public async Task<IActionResult> PutResource(int id, Resource resource)
     {
         if (id != resource.ResourceId)
@@ -76,7 +76,7 @@ public class ResourceController : ControllerBase
     }
 
     // DELETE: api/Resource/5
-    [HttpDelete("{id}")]
+    [HttpDelete("аpi/DeleteResource{id}")]
     public async Task<IActionResult> DeleteResource(int id)
     {
         var resource = await _context.Resources.FindAsync(id);

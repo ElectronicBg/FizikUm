@@ -236,6 +236,9 @@ namespace FizikUm.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassroomId"));
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SubjectCategoryId")
                         .HasColumnType("int");
 

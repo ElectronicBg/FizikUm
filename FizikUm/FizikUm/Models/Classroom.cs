@@ -7,6 +7,7 @@ namespace FizikUm.Models
     {
         [Key]
         public int ClassroomId { get; set; }
+        public string Name { get; set; }
 
         [ForeignKey("SubjectCategory")]
         public int SubjectCategoryId { get; set; }
