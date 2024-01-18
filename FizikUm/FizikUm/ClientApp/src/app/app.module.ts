@@ -13,6 +13,8 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { UnityComponent } from './unity/unity.component';
+import { ResourceComponent } from './resource/resource.component';
+import { SubjectCategoryComponent } from './subject-category/subject-category.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { UnityComponent } from './unity/unity.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    UnityComponent
+    UnityComponent,
+    ResourceComponent,
+    SubjectCategoryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,6 +36,8 @@ import { UnityComponent } from './unity/unity.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: 'resources', component: ResourceComponent },
+      { path: 'subject-category', component: SubjectCategoryComponent },
     ])
   ],
   providers: [

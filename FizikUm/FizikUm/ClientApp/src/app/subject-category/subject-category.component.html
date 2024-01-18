@@ -1,0 +1,24 @@
+ <h2>Subject Categories</h2>
+
+   Display Success Message 
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+   Display Subject Categories 
+  <ul>
+    <li *ngFor="let category of subjectCategories">
+      {{ category.name }}
+    </li>
+  </ul>
+
+   Add New Subject Category Form 
+  <div>
+    <h3>Add New Subject Category</h3>
+    <form (ngSubmit)="addSubjectCategory()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="newSubjectCategory.name" required>
+      <button type="submit">Add Category</button>
+    </form>
+  </div>
+
