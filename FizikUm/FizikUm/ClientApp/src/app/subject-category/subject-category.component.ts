@@ -10,14 +10,23 @@ export class SubjectCategoryComponent implements OnInit {
 
   subjectCategories: SubjectCategory[] = [];
   newSubjectCategory: SubjectCategory = { subjectCategoryId: 0, name: '' };
+  selectedCategory: SubjectCategory | null = null;
   successMessage: string = '';
-
+  currentView: string = 'index';
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.getSubjectCategories();
   }
 
+  showView(view: string, category?: SubjectCategory) {
+    this.currentView = view;
+
+
+    if (view === 'edit' && category) {
+      this.selectedCategory = { ...category }; 
+    }
+  }
   private apiUrl = 'https://localhost:7175/SubjectCategory/api/';
 
   getSubjectCategories() {
