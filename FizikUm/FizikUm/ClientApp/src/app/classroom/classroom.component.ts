@@ -52,7 +52,7 @@ export class ClassroomComponent implements OnInit {
         // Unsubscribe to avoid multiple subscriptions
         userSubscription.unsubscribe();
 
-        this.newClassroom.teacher = user;
+        this.newClassroom.teacher = user?.name ?? null;
         this.newClassroom.subject = Number(this.newClassroom.subject);
 
         this.http.post<Classroom>(`${this.apiUrl}PostClassroom`, this.newClassroom).subscribe(
@@ -103,7 +103,7 @@ interface Classroom {
   id: number;
   name: string;
   subject: Subject;
-  teacher: ApplicationUser | null;
+  teacher: string | null;
   resources: Resource[];
 }
 

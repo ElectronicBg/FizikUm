@@ -10,7 +10,7 @@ namespace FizikUm.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public Subject Subject { get; set; }
-        public ApplicationUser Teacher { get; set; } 
+        public string Teacher { get; set; }
         public ICollection<ApplicationUser> Students { get; set; } 
         public ICollection<Resource> Resources { get; set; }
     }

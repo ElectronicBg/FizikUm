@@ -19,13 +19,14 @@ namespace FizikUm.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Classroom>()
-                   .HasMany(c => c.Students)
-                   .WithMany(u => u.Classrooms)
-                   .UsingEntity(j => j.ToTable("ClassroomUsers"));
 
             modelBuilder.Entity<Classroom>()
-           .Ignore(c => c.Teacher);
+                .HasMany(c => c.Students)
+                .WithMany(u => u.Classrooms)
+                .UsingEntity(j => j.ToTable("ClassroomUser"));
+
+            /*modelBuilder.Entity<Classroom>()
+           .Ignore(c => c.Teacher);*/
         }
     }
 }

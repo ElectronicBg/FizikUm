@@ -34,7 +34,7 @@ namespace FizikUm.Migrations
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("ClassroomUsers", (string)null);
+                    b.ToTable("ClassroomUser", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -256,6 +256,9 @@ namespace FizikUm.Migrations
 
                     b.Property<int>("Subject")
                         .HasColumnType("int");
+
+                    b.Property<string>("Teacher")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
