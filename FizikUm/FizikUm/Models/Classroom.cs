@@ -3,16 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FizikUm.Models
 {
+
     public class Classroom
     {
         [Key]
-        public int ClassroomId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-
-        [ForeignKey("SubjectCategory")]
-        public int SubjectCategoryId { get; set; }
-        public SubjectCategory SubjectCategory { get; set; }
-
+        public Subject Subject { get; set; }
+        public ApplicationUser Teacher { get; set; } 
+        public ICollection<ApplicationUser> Students { get; set; } 
         public ICollection<Resource> Resources { get; set; }
     }
 }

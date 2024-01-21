@@ -4,6 +4,6 @@ namespace FizikUm.Models
 {
     public class ApplicationUser : IdentityUser
     {
-
+        public ICollection<Classroom> Classrooms { get; set; } 
     }
 }

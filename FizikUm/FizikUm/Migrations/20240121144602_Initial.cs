@@ -51,6 +51,20 @@ namespace FizikUm.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Classrooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Subject = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classrooms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DeviceCodes",
                 columns: table => new
                 {
@@ -105,19 +119,6 @@ namespace FizikUm.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubjectCategories",
-                columns: table => new
-                {
-                    SubjectCategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubjectCategories", x => x.SubjectCategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -227,22 +228,26 @@ namespace FizikUm.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classrooms",
+                name: "ClassroomUsers",
                 columns: table => new
                 {
-                    ClassroomId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SubjectCategoryId = table.Column<int>(type: "int", nullable: false)
+                    ClassroomsId = table.Column<int>(type: "int", nullable: false),
+                    StudentsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomId);
+                    table.PrimaryKey("PK_ClassroomUsers", x => new { x.ClassroomsId, x.StudentsId });
                     table.ForeignKey(
-                        name: "FK_Classrooms_SubjectCategories_SubjectCategoryId",
-                        column: x => x.SubjectCategoryId,
-                        principalTable: "SubjectCategories",
-                        principalColumn: "SubjectCategoryId",
+                        name: "FK_ClassroomUsers_AspNetUsers_StudentsId",
+                        column: x => x.StudentsId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassroomUsers_Classrooms_ClassroomsId",
+                        column: x => x.ClassroomsId,
+                        principalTable: "Classrooms",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -250,28 +255,27 @@ namespace FizikUm.Migrations
                 name: "Resources",
                 columns: table => new
                 {
-                    ResourceId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SubjectCategoryId = table.Column<int>(type: "int", nullable: true),
-                    ClassroomId = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassroomId = table.Column<int>(type: "int", nullable: true),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Resources", x => x.ResourceId);
+                    table.PrimaryKey("PK_Resources", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Resources_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Resources_Classrooms_ClassroomId",
                         column: x => x.ClassroomId,
                         principalTable: "Classrooms",
-                        principalColumn: "ClassroomId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Resources_SubjectCategories_SubjectCategoryId",
-                        column: x => x.SubjectCategoryId,
-                        principalTable: "SubjectCategories",
-                        principalColumn: "SubjectCategoryId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -314,9 +318,9 @@ namespace FizikUm.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Classrooms_SubjectCategoryId",
-                table: "Classrooms",
-                column: "SubjectCategoryId");
+                name: "IX_ClassroomUsers_StudentsId",
+                table: "ClassroomUsers",
+                column: "StudentsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceCodes_DeviceCode",
@@ -360,9 +364,9 @@ namespace FizikUm.Migrations
                 column: "ClassroomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Resources_SubjectCategoryId",
+                name: "IX_Resources_CreatedById",
                 table: "Resources",
-                column: "SubjectCategoryId");
+                column: "CreatedById");
         }
 
         /// <inheritdoc />
@@ -384,6 +388,9 @@ namespace FizikUm.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ClassroomUsers");
+
+            migrationBuilder.DropTable(
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
@@ -403,9 +410,6 @@ namespace FizikUm.Migrations
 
             migrationBuilder.DropTable(
                 name: "Classrooms");
-
-            migrationBuilder.DropTable(
-                name: "SubjectCategories");
         }
     }
 }

@@ -14,7 +14,6 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { UnityComponent } from './unity/unity.component';
 import { ResourceComponent } from './resource/resource.component';
-import { SubjectCategoryComponent } from './subject-category/subject-category.component';
 import { ClassroomComponent } from './classroom/classroom.component';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { ClassroomComponent } from './classroom/classroom.component';
     FetchDataComponent,
     UnityComponent,
     ResourceComponent,
-    SubjectCategoryComponent,
     ClassroomComponent
   ],
   imports: [
@@ -38,8 +36,7 @@ import { ClassroomComponent } from './classroom/classroom.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'resource', component: ResourceComponent },
-      { path: 'subject-category', component: SubjectCategoryComponent },
+      { path: 'resources', component: ResourceComponent },
       { path: 'classroom', component: ClassroomComponent },
     ])
   ],

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FizikUm.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240118153842_Initial")]
+    [Migration("20240121144602_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,21 @@ namespace FizikUm.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ApplicationUserClassroom", b =>
+                {
+                    b.Property<int>("ClassroomsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ClassroomsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("ClassroomUsers", (string)null);
+                });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
                 {
@@ -233,38 +248,39 @@ namespace FizikUm.Migrations
 
             modelBuilder.Entity("FizikUm.Models.Classroom", b =>
                 {
-                    b.Property<int>("ClassroomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassroomId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SubjectCategoryId")
+                    b.Property<int>("Subject")
                         .HasColumnType("int");
 
-                    b.HasKey("ClassroomId");
-
-                    b.HasIndex("SubjectCategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("FizikUm.Models.Resource", b =>
                 {
-                    b.Property<int>("ResourceId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResourceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClassroomId")
+                    b.Property<int?>("ClassroomId")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -272,32 +288,13 @@ namespace FizikUm.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubjectCategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ResourceId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClassroomId");
 
-                    b.HasIndex("SubjectCategoryId");
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("FizikUm.Models.SubjectCategory", b =>
-                {
-                    b.Property<int>("SubjectCategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectCategoryId"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SubjectCategoryId");
-
-                    b.ToTable("SubjectCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -437,32 +434,34 @@ namespace FizikUm.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FizikUm.Models.Classroom", b =>
+            modelBuilder.Entity("ApplicationUserClassroom", b =>
                 {
-                    b.HasOne("FizikUm.Models.SubjectCategory", "SubjectCategory")
+                    b.HasOne("FizikUm.Models.Classroom", null)
                         .WithMany()
-                        .HasForeignKey("SubjectCategoryId")
+                        .HasForeignKey("ClassroomsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubjectCategory");
+                    b.HasOne("FizikUm.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FizikUm.Models.Resource", b =>
                 {
                     b.HasOne("FizikUm.Models.Classroom", "Classroom")
                         .WithMany("Resources")
-                        .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClassroomId");
 
-                    b.HasOne("FizikUm.Models.SubjectCategory", "SubjectCategory")
+                    b.HasOne("FizikUm.Models.ApplicationUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("SubjectCategoryId");
+                        .HasForeignKey("CreatedById");
 
                     b.Navigation("Classroom");
 
-                    b.Navigation("SubjectCategory");
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -17,22 +17,26 @@ public class ClassroomController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Classrooms
     [HttpGet("api/GetClassroom")]
     public async Task<ActionResult<IEnumerable<Classroom>>> GetClassrooms()
     {
-        return await _context.Classrooms
-            .Include(c => c.SubjectCategory) // Include related SubjectCategory
+        var classrooms = await _context.Classrooms
+            .Include(c => c.Resources)
             .ToListAsync();
+
+        // Explicitly cast the Subject property to Subject enum
+        classrooms.ForEach(classroom => classroom.Subject = Enum.Parse<Subject>(classroom.Subject.ToString()));
+
+        return classrooms;
     }
 
-    // GET: api/Classrooms/5
+    // GET: /Classroom/api/GetClassroom/5
     [HttpGet("api/GetClassroom/{id}")]
     public async Task<ActionResult<Classroom>> GetClassroom(int id)
     {
         var classroom = await _context.Classrooms
-            .Include(c => c.SubjectCategory)
-            .FirstOrDefaultAsync(c => c.ClassroomId == id);
+            .Include(c => c.Resources)
+            .FirstOrDefaultAsync(c => c.Id == id);
 
         if (classroom == null)
         {
@@ -42,21 +46,21 @@ public class ClassroomController : ControllerBase
         return classroom;
     }
 
-    // POST: api/Classrooms
+    // POST: /Classroom/api/PostClassroom
     [HttpPost("api/PostClassroom")]
     public async Task<ActionResult<Classroom>> PostClassroom(Classroom classroom)
     {
         _context.Classrooms.Add(classroom);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetClassroom), new { id = classroom.ClassroomId }, classroom);
+        return CreatedAtAction(nameof(GetClassroom), new { id = classroom.Id }, classroom);
     }
 
-    // PUT: api/Classrooms/5
+    // PUT: /Classroom/api/PutClassroom/5
     [HttpPut("api/PutClassroom/{id}")]
     public async Task<IActionResult> PutClassroom(int id, Classroom classroom)
     {
-        if (id != classroom.ClassroomId)
+        if (id != classroom.Id)
         {
             return BadRequest();
         }
@@ -82,7 +86,7 @@ public class ClassroomController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/Classrooms/5
+    // DELETE: /Classroom/api/DeleteClassroom/5
     [HttpDelete("api/DeleteClassroom/{id}")]
     public async Task<IActionResult> DeleteClassroom(int id)
     {
@@ -101,6 +105,6 @@ public class ClassroomController : ControllerBase
 
     private bool ClassroomExists(int id)
     {
-        return _context.Classrooms.Any(e => e.ClassroomId == id);
+        return _context.Classrooms.Any(e => e.Id == id);
     }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthorizeService } from 'D:/FizikUm/FizikUm/FizikUm/ClientApp/src/api-authorization/authorize.service';
 
 @Component({
   selector: 'app-classroom',
@@ -7,23 +8,26 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./classroom.component.css']
 })
 export class ClassroomComponent implements OnInit {
-
   classrooms: Classroom[] = [];
-  subjectCategories: SubjectCategory[] = [];
-  newClassroom: Classroom = { classroomId: 0, name: '', subjectCategoryId: 0, subjectCategory: null, resources: [] };
+  subjects = Subject;
+  subjectOptions: number[] = Object.values(Subject).filter(value => !isNaN(Number(value))) as number[];
+  newClassroom: Classroom = { id: 0, name: '', teacher: null, subject: Subject.Physics, resources: [] };
   selectedClassroom: Classroom | null = null;
   successMessage: string = '';
   currentView: string = 'index';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthorizeService ) { }
 
   ngOnInit(): void {
     this.getClassrooms();
-    this.getSubjectCategories();
   }
 
   showView(view: string, classroom?: Classroom) {
     this.currentView = view;
+
+    if (view === 'index') {
+      this.getClassrooms();
+    }
 
     if (view === 'edit' && classroom) {
       this.selectedClassroom = { ...classroom };
@@ -31,11 +35,6 @@ export class ClassroomComponent implements OnInit {
   }
 
   private apiUrl = 'https://localhost:7175/Classroom/api/';
-
-  getSubjectCategories() {
-    this.http.get<SubjectCategory[]>(`https://localhost:7175/SubjectCategory/api/GetSubjectCategory`)
-      .subscribe(data => this.subjectCategories = data);
-  }
 
   getClassrooms() {
     this.http.get<Classroom[]>(`${this.apiUrl}GetClassroom`)
@@ -48,20 +47,37 @@ export class ClassroomComponent implements OnInit {
   }
 
   addClassroom() {
-    this.http.post<Classroom>(`${this.apiUrl}PostClassroom`, this.newClassroom)
-      .subscribe(
-        data => {
-          this.classrooms.push(data);
-          this.newClassroom = { classroomId: 0, name: '', subjectCategoryId: 0, subjectCategory: null, resources: [] };
-          this.successMessage = 'Classroom added successfully!';
-        },
-        error => {
-          console.error('Error adding classroom:', error);
-        }
-      );
+    const userSubscription = this.authService.getUser().subscribe(
+      user => {
+        // Unsubscribe to avoid multiple subscriptions
+        userSubscription.unsubscribe();
+
+        this.newClassroom.teacher = user;
+        this.newClassroom.subject = Number(this.newClassroom.subject);
+
+        this.http.post<Classroom>(`${this.apiUrl}PostClassroom`, this.newClassroom).subscribe(
+          data => {
+            this.classrooms.push(data);
+            this.newClassroom = { id: 0, name: '', subject: Subject.Physics, teacher: null, resources: [] };
+            this.successMessage = 'Classroom added successfully!';
+          },
+          error => {
+            console.error('Error adding classroom:', error);
+          }
+        );
+      },
+      error => {
+        console.error('Error fetching user:', error);
+      }
+    );
   }
 
+
+
   updateClassroom(id: number, classroom: Classroom) {
+
+    classroom.subject = Number(classroom.subject);
+
     this.http.put(`${this.apiUrl}PutClassroom/${id}`, classroom)
       .subscribe(() => {
         this.successMessage = 'Classroom updated successfully!';
@@ -71,32 +87,36 @@ export class ClassroomComponent implements OnInit {
   deleteClassroom(id: number) {
     this.http.delete(`${this.apiUrl}DeleteClassroom/${id}`)
       .subscribe(() => {
-        this.classrooms = this.classrooms.filter(c => c.classroomId !== id);
+        this.classrooms = this.classrooms.filter(c => c.id !== id);
         this.successMessage = 'Classroom deleted successfully!';
       });
   }
 
 }
 
-interface Classroom {
-  classroomId: number;
-  name: string;
-  subjectCategoryId: number;
-  subjectCategory: SubjectCategory | null;
-  resources: Resource[] | null;
+enum Subject {
+  Physics = 0,
+  Biology = 1,
+  Chemistry = 2,
 }
-
-interface SubjectCategory {
-  subjectCategoryId: number;
+interface Classroom {
+  id: number;
   name: string;
+  subject: Subject;
+  teacher: ApplicationUser | null;
+  resources: Resource[];
 }
 
 interface Resource {
-  resourceId: number;
+  id: number;
   name: string;
   description: string;
-  subjectCategory: SubjectCategory;
+  code: string;
   classroomId: number;
   classroom: Classroom;
-  code: string;
+  createdBy: ApplicationUser | null;
+}
+
+interface ApplicationUser {
+  // Define properties for ApplicationUser as needed
 }
