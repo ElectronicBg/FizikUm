@@ -6,19 +6,21 @@
 <div *ngIf="currentView === 'index'">
   <h2>Classrooms</h2>
 
-  <ul>
-    <li *ngFor="let classroom of classrooms">
-      <strong>Name:</strong> {{ classroom.name }}<br>
-      <strong>Subject:</strong> {{ subjects[classroom.subject] }}<br>
+  <div class="classrooms-container">
+    <div *ngFor="let classroom of classrooms" class="classroom-card">
+      <div>
+        <strong>Name:</strong> {{ classroom.name }}<br>
+        <strong>Subject:</strong> {{ subjects[classroom.subject] }}<br>
 
-      <button (click)="showView('edit', classroom)">Edit</button>
-      <button (click)="deleteClassroom(classroom.id)">Delete</button>
-    </li>
-  </ul>
+        <button (click)="showView('edit', classroom)">Edit</button>
+        <button (click)="deleteClassroom(classroom.id)">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="currentView === 'create'">
-  <div>
+  <div class="classroom-card">
     <h3>Add New Classroom</h3>
     <form (ngSubmit)="addClassroom()">
       <label for="name">Name:</label>
@@ -37,16 +39,18 @@
 </div>
 
 <div *ngIf="currentView === 'edit'">
-  <p>Edit Classroom View</p>
-  <form *ngIf="selectedClassroom" (ngSubmit)="updateClassroom(selectedClassroom.id, selectedClassroom)">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" [(ngModel)]="selectedClassroom.name" required>
+  <div class="classroom-card">
+    <p>Edit Classroom View</p>
+    <form *ngIf="selectedClassroom" (ngSubmit)="updateClassroom(selectedClassroom.id, selectedClassroom)">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="selectedClassroom.name" required>
 
-    <label for="subject">Subject:</label>
-    <select id="subject" name="subject" [(ngModel)]="selectedClassroom.subject" required>
-      <option *ngFor="let subject of subjectOptions" [value]="subject">{{ subjects[subject] }}</option>
-    </select>
+      <label for="subject">Subject:</label>
+      <select id="subject" name="subject" [(ngModel)]="selectedClassroom.subject" required>
+        <option *ngFor="let subject of subjectOptions" [value]="subject">{{ subjects[subject] }}</option>
+      </select>
 
-    <button type="submit">Save Changes</button>
-  </form>
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
 </div>
