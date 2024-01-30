@@ -261,22 +261,18 @@ namespace FizikUm.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClassroomId = table.Column<int>(type: "int", nullable: true),
-                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ClassroomId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Resources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Resources_AspNetUsers_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Resources_Classrooms_ClassroomId",
                         column: x => x.ClassroomId,
                         principalTable: "Classrooms",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -363,11 +359,6 @@ namespace FizikUm.Migrations
                 name: "IX_Resources_ClassroomId",
                 table: "Resources",
                 column: "ClassroomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Resources_CreatedById",
-                table: "Resources",
-                column: "CreatedById");
         }
 
         /// <inheritdoc />

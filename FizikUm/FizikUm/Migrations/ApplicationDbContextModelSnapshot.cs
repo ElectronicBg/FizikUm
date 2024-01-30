@@ -273,14 +273,14 @@ namespace FizikUm.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ClassroomId")
+                    b.Property<int>("ClassroomId")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -291,8 +291,6 @@ namespace FizikUm.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClassroomId");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Resources");
                 });
@@ -453,15 +451,11 @@ namespace FizikUm.Migrations
                 {
                     b.HasOne("FizikUm.Models.Classroom", "Classroom")
                         .WithMany("Resources")
-                        .HasForeignKey("ClassroomId");
-
-                    b.HasOne("FizikUm.Models.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Classroom");
-
-                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

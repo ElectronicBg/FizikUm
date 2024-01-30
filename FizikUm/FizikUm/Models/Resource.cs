@@ -10,7 +10,11 @@ namespace FizikUm.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Code { get; set; }
+
+        [ForeignKey("Classroom")]
+        public int ClassroomId { get; set; }
         public Classroom Classroom { get; set; }
-        public ApplicationUser CreatedBy { get; set; }
+
+        public string CreatedBy { get; set; }
     }
 }

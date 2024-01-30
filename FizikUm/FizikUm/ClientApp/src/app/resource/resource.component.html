@@ -1,0 +1,58 @@
+<nav>
+  <a (click)="showView('index')">Index</a>
+  <a (click)="showView('create')">Create</a>
+</nav>
+
+<div *ngIf="currentView === 'index'">
+  <h2>Resources</h2>
+
+  <ul>
+    <li *ngFor="let resource of resources">
+      <strong>Name:</strong> {{ resource.name }}<br>
+      <strong>Description:</strong> {{ resource.description }}<br>
+      <strong>Code:</strong> {{ resource.code }}<br>
+
+      <button (click)="showView('edit', resource)">Edit</button>
+      <button (click)="deleteResource(selectedResource?.id)">Delete</button>
+
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="currentView === 'create'">
+  <div>
+    <h3>Add New Resource</h3>
+    <form (ngSubmit)="addResource()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="newResource.name" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" [(ngModel)]="newResource.description" required></textarea>
+
+      <label for="code">Code:</label>
+      <input type="text" id="code" name="code" [(ngModel)]="newResource.code" required>
+
+      <label for="classroomId">Classroom:</label>
+      <select id="classroomId" [(ngModel)]="newResource.selectedClassroomId" name="classroomId">
+        <option *ngFor="let classroom of classrooms" [ngValue]="classroom.id">{{ classroom.name }}</option>
+      </select>
+      <button type="submit">Add Resource</button>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="currentView === 'edit'">
+  <p>Edit Resource View</p>
+  <form *ngIf="selectedResource" (ngSubmit)="updateResource(selectedResource.id, selectedResource)">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="selectedResource.name" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" [(ngModel)]="selectedResource.description" required></textarea>
+
+    <label for="code">Code:</label>
+    <input type="text" id="code" name="code" [(ngModel)]="selectedResource.code" required>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>

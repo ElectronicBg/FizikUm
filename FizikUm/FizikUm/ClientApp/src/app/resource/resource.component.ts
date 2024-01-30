@@ -1,5 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthorizeService } from 'D:/FizikUm/FizikUm/FizikUm/ClientApp/src/api-authorization/authorize.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-resource',
@@ -8,93 +10,138 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ResourceComponent implements OnInit {
   public resources: Resource[] = [];
-  public newResource: Resource = {
-    resourceId: 0,
-    name: '',
-    description: '',
-    subjectCategory: { subjectCategoryId: 0, name: '' },
-    classroomId: 0,
-    classroom: { classroomId: 0, subjectCategoryId: 0, subjectCategory: { subjectCategoryId: 0, name: '' }, resources: [] },
-    code: ''
-  };
+  public classrooms: Classroom[] = [];
+  public newResource: Resource = this.getEmptyResource();
+
+  // Add the selectedResource property
+  public selectedResource: Resource | null = null;
+
   currentView: string = 'index';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthorizeService) { }
 
   ngOnInit(): void {
     this.getResources();
+    this.getClassrooms();
+  }
+
+  getClassrooms() {
+    // Fetch the list of existing classrooms from your API
+    this.http.get<Classroom[]>(`https://localhost:7175/Classroom/api/GetClassroom`).subscribe(
+      result => this.classrooms = result,
+      error => console.error('Error fetching classrooms:', error)
+    );
   }
 
   showView(view: string, resource?: Resource) {
-    // No direct equivalent action for showView in this context.
+    this.currentView = view;
+
+    if (view === 'index') {
+      this.getResources();
+    }
+
+    if (view === 'edit' && resource) {
+      this.selectedResource = { ...resource };
+    }
   }
 
-  private apiUrl = 'http://localhost:5297/Resource/api/';
+  private apiUrl = 'https://localhost:7175/Resource/api/';
 
   getResources() {
-    this.http.get<Resource[]>(`${this.apiUrl}GetResource`).subscribe(
-      result => this.resources = result); 
+    this.http.get<Resource[]>(`${this.apiUrl}GetResources`).subscribe(
+      result => this.resources = result,
+      error => console.error('Error fetching resources:', error)
+    );
   }
 
   addResource() {
-    this.http.post<Resource>(`${this.apiUrl}PostResource`, this.newResource).subscribe(
-      result => {
-        this.resources.push(result);
-        this.resetNewResource();
+    this.authService.getUser().pipe(take(1)).subscribe(
+      user => {
+        this.newResource.createdBy = user?.name ?? null;
+       
+        const selectedClassroomId = this.newResource.selectedClassroomId;
+
+        // Find the selected classroom based on selectedClassroomId
+        const selectedClassroom = this.classrooms.find(c => c.id === selectedClassroomId);
+
+        if (selectedClassroom) {
+          // Set the classroomId to the selected classroom's id
+          this.newResource.classroomId = selectedClassroom.id;
+          console.log('Selected Classroom ID:', this.newResource.selectedClassroomId);
+
+          this.http.post<Resource>(`${this.apiUrl}PostResource`, this.newResource).subscribe(
+            result => {
+              result.classroomId = selectedClassroom.id;
+              this.resources.push(result);
+              this.resetNewResource();
+            },
+            error => console.error('Error adding resource:', error)
+          );
+        } else {
+          console.error('Selected classroom not found');
+        }
       },
-      error => console.error(error)
+      error => console.error('Error fetching user:', error)
     );
   }
 
-  updateResource(id: number, resource: Resource) {
-    this.http.put(`${this.apiUrl}PutResource/${id}`, resource).subscribe(
+  updateResource(id: number, Resource: Resource) {
+    this.http.put(`${this.apiUrl}PutResource/${id}`, Resource).subscribe(
       () => {
-        // Optional: Handle success, e.g., show a message
       },
-      error => console.error(error)
+      error => console.error('Error updating resource:', error)
     );
   }
 
-  deleteResource(id: number) {
+  deleteResource(id: number | undefined) {
+    if (id === undefined) {   
+      return;
+    }
+
     this.http.delete(`${this.apiUrl}DeleteResource/${id}`).subscribe(
       () => {
-        this.resources = this.resources.filter(r => r.resourceId !== id);
+        this.resources = this.resources.filter(r => r.id !== id);
       },
-      error => console.error(error)
+      error => console.error('Error deleting resource:', error)
     );
   }
 
   private resetNewResource() {
-    this.newResource = {
-      resourceId: 0,
+    this.newResource = this.getEmptyResource();
+  }
+
+  private getEmptyResource(): Resource {
+    return {
+      id: 0,
       name: '',
       description: '',
-      subjectCategory: { subjectCategoryId: 0, name: '' },
       classroomId: 0,
-      classroom: { classroomId: 0, subjectCategoryId: 0, subjectCategory: { subjectCategoryId: 0, name: '' }, resources: [] },
-      code: ''
+      code: '',
+      createdBy: ''
     };
   }
 }
 
 interface Resource {
-  resourceId: number;
+  id: number;
   name: string;
   description: string;
-  subjectCategory: SubjectCategory;
-  classroomId: number;
-  classroom: Classroom;
   code: string;
+  classroomId: number;
+  createdBy: string | null;
+  selectedClassroomId?: number;
 }
 
-interface SubjectCategory {
-  subjectCategoryId: number;
-  name: string;
+enum Subject {
+  Physics = 0,
+  Biology = 1,
+  Chemistry = 2,
 }
 
 interface Classroom {
-  classroomId: number;
-  subjectCategoryId: number;
-  subjectCategory: SubjectCategory;
+  id: number;
+  name: string;
+  subject: Subject;
+  teacher: string | null;
   resources: Resource[];
 }

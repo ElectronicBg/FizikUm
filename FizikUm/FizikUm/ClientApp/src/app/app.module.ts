@@ -13,8 +13,8 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { UnityComponent } from './unity/unity.component';
-import { ResourceComponent } from './resource/resource.component';
 import { ClassroomComponent } from './classroom/classroom.component';
+import { ResourceComponent } from './resource/resource.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +24,8 @@ import { ClassroomComponent } from './classroom/classroom.component';
     CounterComponent,
     FetchDataComponent,
     UnityComponent,
-    ResourceComponent,
-    ClassroomComponent
+    ClassroomComponent,
+    ResourceComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,8 +36,8 @@ import { ClassroomComponent } from './classroom/classroom.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'resources', component: ResourceComponent },
       { path: 'classroom', component: ClassroomComponent },
+      { path: 'resource', component: ResourceComponent },
     ])
   ],
   providers: [

@@ -72,8 +72,6 @@ export class ClassroomComponent implements OnInit {
     );
   }
 
-
-
   updateClassroom(id: number, classroom: Classroom) {
 
     classroom.subject = Number(classroom.subject);
@@ -114,9 +112,7 @@ interface Resource {
   code: string;
   classroomId: number;
   classroom: Classroom;
-  createdBy: ApplicationUser | null;
+  createdBy: string | null;
 }
 
-interface ApplicationUser {
-  // Define properties for ApplicationUser as needed
-}
+

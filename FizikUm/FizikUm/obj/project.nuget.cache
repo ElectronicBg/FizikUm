@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zD+eFMd7JdcEJd3CtSgen5H0k7hcQgkN4mVLrG5UEgDB+71hsWq134F/OHaILW5N8UvxRtusijSEqFVeUUfhqw==",
+  "dgSpecHash": "xo+UdDzkeZIQwyFsHgJ9T6eiYT1TN+YY2WBuV0QmU3KfqS/PJdWxG32I3s1V2m1hC+TWmknIAeQPiYneEj1JPg==",
   "success": true,
   "projectFilePath": "D:\\FizikUm\\FizikUm\\FizikUm\\FizikUm.csproj",
   "expectedPackageFiles": [
@@ -27,6 +27,8 @@
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\7.0.11\\microsoft.aspnetcore.identity.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\7.0.11\\microsoft.aspnetcore.identity.ui.7.0.11.nupkg.sha512",
+    "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\7.0.11\\microsoft.aspnetcore.jsonpatch.7.0.11.nupkg.sha512",
+    "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\7.0.11\\microsoft.aspnetcore.mvc.newtonsoftjson.7.0.11.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\7.0.11\\microsoft.aspnetcore.spaproxy.7.0.11.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -70,6 +72,7 @@
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Emil Neshkov\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\Emil Neshkov\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.1\\system.configuration.configurationmanager.6.0.1.nupkg.sha512",
