@@ -12,11 +12,27 @@
         <strong>Name:</strong> {{ classroom.name }}<br>
         <strong>Subject:</strong> {{ subjects[classroom.subject] }}<br>
 
+        <button (click)="showResources(classroom.id)">View Resources</button>
+
         <button (click)="showView('edit', classroom)">Edit</button>
         <button (click)="deleteClassroom(classroom.id)">Delete</button>
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="currentView === 'resources'">
+  <h2>Resources for {{ selectedClassroom?.name }}</h2>
+
+  <div *ngFor="let resource of selectedClassroomResources" class="resource-card">
+    <div>
+      <strong>Resource Name:</strong> {{ resource.name }}<br>
+      <strong>Description:</strong> {{ resource.description }}<br>
+      <strong>Code:</strong> {{ resource.code }}<br>
+    </div>
+  </div>
+
+  <button (click)="showView('index')">Back to Classrooms</button>
 </div>
 
 <div *ngIf="currentView === 'create'">

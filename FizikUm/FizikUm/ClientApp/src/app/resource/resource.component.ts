@@ -12,7 +12,7 @@ export class ResourceComponent implements OnInit {
   public resources: Resource[] = [];
   public classrooms: Classroom[] = [];
   public newResource: Resource = this.getEmptyResource();
-
+  expandedClassrooms: Set<number> = new Set<number>();
   // Add the selectedResource property
   public selectedResource: Resource | null = null;
 
@@ -104,6 +104,22 @@ export class ResourceComponent implements OnInit {
       },
       error => console.error('Error deleting resource:', error)
     );
+  }
+
+  getResourcesByClassroomId(classroomId: number): Resource[] {
+    return this.resources.filter(resource => resource.classroomId === classroomId);
+  }
+
+  toggleClassroom(classroomId: number): void {
+    if (this.expandedClassrooms.has(classroomId)) {
+      this.expandedClassrooms.delete(classroomId);
+    } else {
+      this.expandedClassrooms.add(classroomId);
+    }
+  }
+
+  isClassroomExpanded(classroomId: number): boolean {
+    return this.expandedClassrooms.has(classroomId);
   }
 
   private resetNewResource() {

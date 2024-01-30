@@ -7,14 +7,19 @@
   <h2>Resources</h2>
 
   <div class="resources-container">
-    <div *ngFor="let resource of resources" class="resource-card">
-      <div>
-        <strong>Name:</strong> {{ resource.name }}<br>
-        <strong>Description:</strong> {{ resource.description }}<br>
-        <strong>Code:</strong> {{ resource.code }}<br>
-
-        <button (click)="showView('edit', resource)">Edit</button>
-        <button (click)="deleteResource(resource.id)">Delete</button>
+    <div *ngFor="let classroom of classrooms" class="classroom-section">
+      <div class="classroom-header" (click)="toggleClassroom(classroom.id)">
+        <h3>{{ classroom.name }}</h3>
+        <span [class.expanded]="isClassroomExpanded(classroom.id)">&#9660;</span>
+      </div>
+      <div *ngIf="isClassroomExpanded(classroom.id)">
+        <div *ngFor="let resource of getResourcesByClassroomId(classroom.id)" class="resource-card">
+          <strong>Name:</strong> {{ resource.name }}<br>
+          <strong>Description:</strong> {{ resource.description }}<br>
+          <strong>Code:</strong> {{ resource.code }}<br>
+          <button (click)="showView('edit', resource)">Edit</button>
+          <button (click)="deleteResource(resource.id)">Delete</button>
+        </div>
       </div>
     </div>
   </div>

@@ -93,6 +93,23 @@ public class ResourceController : ControllerBase
 
         return NoContent();
     }
+    
+    //CLASSROOM: api/GetResourcesForClassroom/5
+    [HttpGet("api/GetResourcesForClassroom/{id}")]
+    public async Task<ActionResult<IEnumerable<Resource>>> GetResourcesForClassroom(int id)
+    {
+        var resources = await _context.Resources
+            .Where(r => r.ClassroomId == id)
+            .ToListAsync();
+
+        if (resources == null || resources.Count == 0)
+        {
+            return NotFound();
+        }
+
+        return resources;
+    }
+
 
     private bool ResourceExists(int id)
     {

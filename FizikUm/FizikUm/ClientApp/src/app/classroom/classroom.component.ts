@@ -13,8 +13,10 @@ export class ClassroomComponent implements OnInit {
   subjectOptions: number[] = Object.values(Subject).filter(value => !isNaN(Number(value))) as number[];
   newClassroom: Classroom = { id: 0, name: '', teacher: null, subject: Subject.Physics, resources: [] };
   selectedClassroom: Classroom | null = null;
+  selectedClassroomResources: Resource[] = [];
   successMessage: string = '';
   currentView: string = 'index';
+
 
   constructor(private http: HttpClient, private authService: AuthorizeService ) { }
 
@@ -87,6 +89,22 @@ export class ClassroomComponent implements OnInit {
       .subscribe(() => {
         this.classrooms = this.classrooms.filter(c => c.id !== id);
         this.successMessage = 'Classroom deleted successfully!';
+      });
+  }
+
+  showResources(classroomId: number) {
+    // Fetch classroom information
+    this.http.get<Classroom>(`${this.apiUrl}GetClassroom/${classroomId}`)
+      .subscribe(classroom => {
+        this.selectedClassroom = classroom;
+
+        // Fetch resources for the classroom
+        this.http.get<Resource[]>(`https://localhost:7175/Resource/api/GetResourcesForClassroom/${classroomId}`)
+          .subscribe(data => {
+            console.log("Received Resources:", data);
+            this.selectedClassroomResources = data;
+            this.showView('resources');
+          });
       });
   }
 
