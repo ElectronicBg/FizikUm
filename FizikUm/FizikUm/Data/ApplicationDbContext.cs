@@ -24,9 +24,6 @@ namespace FizikUm.Data
                 .HasMany(c => c.Students)
                 .WithMany(u => u.Classrooms)
                 .UsingEntity(j => j.ToTable("ClassroomUser"));
-
-            /*modelBuilder.Entity<Classroom>()
-           .Ignore(c => c.Teacher);*/
         }
     }
 }

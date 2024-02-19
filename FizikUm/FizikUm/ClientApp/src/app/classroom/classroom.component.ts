@@ -103,7 +103,7 @@ export class ClassroomComponent implements OnInit {
           .subscribe(data => {
             console.log("Received Resources:", data);
             this.selectedClassroomResources = data;
-            this.showView('resources');
+            this.showView('classroom-resources');
           });
       });
   }
